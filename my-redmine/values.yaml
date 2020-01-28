@@ -1,0 +1,76 @@
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+
+replicaCount: 1
+
+# Current available global Docker image parameters: imageRegistry
+
+# global:
+#   imageRegistry: myRegistryName
+
+image:
+   repository: redmine
+   tag: latest
+
+   ## Specify a imagePullPolicy
+
+   pullPolicy: IfNotPresent
+
+# Kubernetes configuration
+
+service:
+   enabled: true
+
+  ## nodePorts:
+  ##   http: <to set explicitly, choose port between 30000-32767>
+   type: NodePort
+   # if you want the NodePort you can specify that here.
+
+
+   # HTTP Port
+   port: 80
+   targetPort: 3000
+   protocol: TCP
+
+
+# nodePort: <to set explicitly, choose port between 30000-32767
+# Enable Kubernetes Liveness and Readiness Probes
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 3
+
+
+
+databaseType: mysql
+
+##Mysql Chart configuration
+mysql:
+  enabled: true
+  image:
+    repository: mysql
+    tag: 5.7
+    pullPolicy: IfNotPresent
+
+  db:
+    name: my_redmine
+    user: so_redmine
+    password: password
+
+externalDatabase:
+  host: localhost
+  name: database
+  user: user
+  password: ""
+  port: 3306
